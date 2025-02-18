@@ -16,10 +16,58 @@ body {margin: 0; font-family: 'Libre Baskerville', serif; background-color: #111
 .clase3:hover .clase6 {display: block;}
 .clase6 a {display: block; padding: 10px 0; text-decoration: none; color: #d4af37; font-size: 16px; font-family: 'Raleway', sans-serif; transition: background-color 0.3s ease, color 0.3s ease;}
 .clase6 a:hover {background-color: #d4af37; color: #111;}
-.clase7 {display: flex; justify-content: space-evenly; margin-left: 10px;} /* Nuevo contenedor para los botones rojos */
-.clase7 .clase3 {background-color: #e74c3c; /* Fondo rojo para los nuevos botones */ color: #fff;} 
-.clase7 .clase3:hover {box-shadow: 0 6px 12px rgba(231, 76, 60, 0.5);} /* Sombra adaptada para los botones rojos */
 .clase4 {height: 670px; width: 100%; background-image: url('ee21.jpg'); background-size: cover; background-position: center; filter: brightness(80%);}
+
+.claseR {
+    position: absolute;
+    top: 50%;
+    padding: 1%;
+    right: 4%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    background-color: #201f00; /* Fondo gris oscuro */
+    box-shadow: 0 1px 25px rgba(144, 137, 0, 0.5);
+    border-radius: 10px;
+    gap: 20px;
+    align-items: center;
+}
+
+
+.claseR .clase3 {
+    padding: 12px 25px;
+    text-decoration: none;
+    color: #fff; /* Blanco en el texto */
+    background-color: #595121; /* Gris suave */
+    border-radius: 30px;
+    font-size: 18px;
+    font-family: 'Raleway', sans-serif;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.claseR .clase3:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Suavizar sombra */
+    color: #fff; /* Blanco */
+    background-color: #616161; /* Gris oscuro */
+}
+
+.clase6 a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #d6cfc7; /* Beige suave */
+    font-size: 16px;
+    font-family: 'Raleway', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.clase6 a:hover {
+    background-color: #b3a99b; /* Beige oscuro */
+    color: #111; /* Negro */
+}
+
 
 </style>
 </head>
@@ -30,9 +78,9 @@ body {margin: 0; font-family: 'Libre Baskerville', serif; background-color: #111
 <div class="clase3">Usuarios<div class="clase6"><a href="index.html">Inicio</a><a href="añadir2.php">Añadir</a><a href="listar2.php">Listar</a><a href="buscar2.php">Buscar</a><a href="modificar2.php">Modificar</a><a href="borrar2.php">Borrar</a></div></div>
 <div class="clase3">Alquileres<div class="clase6"><a href="index.html">Inicio</a><a href="listar3.php">Listar</a><a href="borrar3.php">Borrar</a></div></div>
 </div>
-<div class="clase7">
-<div class="clase3">Rddddddd<div class="clase6"><a href="index.html">Inicio</a><a href="añadir2.php">Añadir</a><a href="listar2.php">Listar</a><a href="buscar2.php">Buscar</a><a href="modificar2.php">Modificar</a><a href="borrar2.php">Borrar</a></div></div>
-<div class="clase3">Rddddddd<div class="clase6"><a href="index.html">Inicio</a><a href="añadir2.php">Añadir</a><a href="listar2.php">Listar</a><a href="buscar2.php">Buscar</a><a href="modificar2.php">Modificar</a><a href="borrar2.php">Borrar</a></div></div>
+<div class="claseR">
+<div class="clase3">Registrarse</div>
+<div class="clase3">Login</div>
 </div>
 </div>
 <div class="clase4"></div>
