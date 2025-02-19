@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['start'] = time();
                 $_SESSION['expire'] = $_SESSION['start'] + (1 * 60);
 
-                header("Location: index.html");
+                header("Location: index.php");
                 exit;
             } else {
                 $error = "Contraseña incorrecta.";
