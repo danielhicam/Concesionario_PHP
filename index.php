@@ -1,7 +1,6 @@
 <?php
 session_start();  // Asegúrate de que esta línea esté al principio
 
-// Verifica si el usuario está autenticado
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     // El usuario no está autenticado
     $loggedIn = false;
@@ -14,9 +13,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     $tipo_usuario = $_SESSION['tipo_usuario'];
 }
 
-
-
-// Si el formulario de logout fue enviado, destruye la sesión y redirige a index.php
 if (isset($_POST['logout'])) {
     session_destroy();  // Destruye todas las variables de sesión
     $_SESSION = [];     // Asegúrate de limpiar todas las variables de sesión
@@ -60,7 +56,7 @@ body {margin: 0; font-family: 'Libre Baskerville', serif; background-color: #111
 elseif (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "admin") 
 { ?><a href="index.php">Inicio</a><a href="añadir.php">Añadir</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a><a href="modificar.php">Modificar</a><a href="borrar.php">Borrar</a> <?php } 
 elseif (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "vendedor") 
-{ ?> <a href="index.php">Inicio</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a> <a href="añadir.php">Anunciar Alquiler</a><a href="añadir.php">Borrar mis Coches</a> <a href="modificar.php">Modificar mis Coches</a><?php } 
+{ ?> <a href="index.php">Inicio</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a> <a href="añadir.php">Anunciar Alquiler</a><a href="borrar.php">Borrar mis Coches</a> <a href="modificar.php">Modificar mis Coches</a><?php } 
 else 
 { ?> <a href="index.php">Inicio</a><a href="listar.php">Listar</a> <a href="buscar.php">Buscar</a> <?php } ?>
 </div>
@@ -98,10 +94,9 @@ else
     <div class="clase3"><a href="registro.php">Registrarse</a></div>
     <div class="clase3"><a href="login.php">Login</a></div>
 <?php endif; ?>
+
 </div>
 </div>
-
-
 <div class="clase4"></div>
 </body>
 </html>

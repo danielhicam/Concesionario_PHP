@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               VALUES ('$nombre', '$apellidos', '$dni', '$password', '$saldo', '$tipo_usuario')";
 
     if ($conexion->query($query) === TRUE) {
-        $mensaje = "Registro exitoso. <br><a href='index.html'>Volver al inicio</a>";
+        $mensaje = "Registro exitoso. <br><a href='index.php'>Volver al inicio</a>";
     } else {
         $mensaje = "Error al registrar: " . $conexion->error;
     }
