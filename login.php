@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_REQUEST['password'];
 
         // Consulta sin prepare() basada en dni
-        $sql = "SELECT id_usuario, password, nombre, apellidos, saldo FROM usuarios WHERE dni = '$dni'";
+        $sql = "SELECT id_usuario, password, nombre, apellidos, saldo, tipo_usuario FROM usuarios WHERE dni = '$dni'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {

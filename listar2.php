@@ -27,9 +27,9 @@ h1 {text-align: center; color: #d4af37; font-size: 36px; margin-bottom: 20px;}
 <body>
 <div class="clase1">Agenda de Alquileres
 <div class="clase2">
-<div class="clase3">Coches<div class="clase6"><a href="index.html">Inicio</a><a href="añadir.php">Añadir</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a><a href="modificar.php">Modificar</a><a href="borrar.php">Borrar</a></div></div>
-<div class="clase3">Usuarios<div class="clase6"><a href="index.html">Inicio</a><a href="añadir2.php">Añadir</a><a href="listar2.php">Listar</a><a href="buscar2.php">Buscar</a><a href="modificar2.php">Modificar</a><a href="borrar2.php">Borrar</a></div></div>
-<div class="clase3">Alquileres<div class="clase6"><a href="index.html">Inicio</a><a href="listar3.php">Listar</a><a href="borrar3.php">Borrar</a></div></div>
+<div class="clase3">Coches<div class="clase6"><a href="index.php">Inicio</a><a href="añadir.php">Añadir</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a><a href="modificar.php">Modificar</a><a href="borrar.php">Borrar</a></div></div>
+<div class="clase3">Usuarios<div class="clase6"><a href="index.php">Inicio</a><a href="añadir2.php">Añadir</a><a href="listar2.php">Listar</a><a href="buscar2.php">Buscar</a><a href="modificar2.php">Modificar</a><a href="borrar2.php">Borrar</a></div></div>
+<div class="clase3">Alquileres<div class="clase6"><a href="index.php">Inicio</a><a href="listar3.php">Listar</a><a href="borrar3.php">Borrar</a></div></div>
 </div>
 </div>
 <div class="clase4">
@@ -39,7 +39,7 @@ if (!$conn) {
     die("<h2>Error de conexión: " . mysqli_connect_error() . "</h2>");
 }
 
-$sql = "SELECT id_usuario, nombre, apellidos, dni, saldo FROM usuarios";
+$sql = "SELECT id_usuario, nombre, apellidos, dni, saldo, tipo_usuario FROM usuarios";
 $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
@@ -50,6 +50,7 @@ if (mysqli_num_rows($result) > 0) {
         <th>Apellidos</th>
         <th>DNI</th>
         <th>Saldo</th>
+        <th>Tipo Usuario</th>
     </tr>";
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
@@ -57,6 +58,7 @@ if (mysqli_num_rows($result) > 0) {
         echo "<td>" . htmlspecialchars($row['apellidos']) . "</td>";
         echo "<td>" . htmlspecialchars($row['dni']) . "</td>";
         echo "<td>" . htmlspecialchars($row['saldo']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['tipo_usuario']) . "</td>";
         echo "</tr>";
     }
     echo "</table>";
