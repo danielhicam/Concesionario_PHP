@@ -9,6 +9,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     $apellidos = $_SESSION['apellidos'];
     $saldo = $_SESSION['saldo'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
+    $id_usuario = $_SESSION['id_usuario'];
 }
 if (isset($_POST['logout'])) {
     session_destroy();  
@@ -121,7 +122,7 @@ else
 else 
 {echo "<h1>No se seleccionaron coches para eliminar</h1>";
 echo "<div class='volver'><a href='borrar.php' class='clasess'>Volver</a></div>";}} 
-else {$sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches";
+else {$sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches where id_usuario = $id_usuario";
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) 
 {echo "<h1>Listado de Coches</h1>";

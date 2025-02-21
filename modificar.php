@@ -9,6 +9,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     $apellidos = $_SESSION['apellidos'];
     $saldo = $_SESSION['saldo'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
+    $id_usuario = $_SESSION['id_usuario'];
 }
 if (isset($_POST['logout'])) {
     session_destroy();  
@@ -125,7 +126,8 @@ if (isset($_POST['buscar'])) {
     if (empty($marca) && empty($modelo)) {
         echo "<h1>No se ha introducido ningún criterio de búsqueda.</h1>";
     } else {
-        $sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches WHERE 1=1";
+        $sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches WHERE id_usuario = '$id_usuario'";
+
 
         if (!empty($marca)) {
             $sql .= " AND marca = '" . mysqli_real_escape_string($conn, $marca) . "'";
@@ -195,11 +197,13 @@ if (isset($_POST['buscar'])) {
                   echo "<label>Marca: </label><input type='text' name='marca' value='" . htmlspecialchars($row['marca']) . "'><br>";
                   echo "<label>Color: </label><input type='text' name='color' value='" . htmlspecialchars($row['color']) . "'><br>";
                   echo "<label>Precio: </label><input type='number' name='precio' value='" . htmlspecialchars($row['precio']) . "'><br>";
+                  if (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "admin") {  
                   echo "<label>Alquilado: </label>";
                   echo "<select name='alquilado'>";
                   echo "<option value='0'" . (!$row['alquilado'] ? " selected" : "") . ">No</option>";
                   echo "<option value='1'" . ($row['alquilado'] ? " selected" : "") . ">Sí</option>";
                   echo "</select><br><br>";
+                  }
                   echo "<button type='submit' style='margin-bottom:-20px;' name='guardar'>Guardar Cambios</button>";
                   echo "</form>";
                   echo "</div>";

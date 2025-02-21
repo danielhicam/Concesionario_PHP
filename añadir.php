@@ -154,6 +154,9 @@ else
 <input type="text" name="color" placeholder="Color" required>
 <input type="number" name="precio" placeholder="Precio (€)" required>
 
+
+<?php if (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "admin")
+{ ?>  
 <div class="alinear">
 <label for="alquilado">¿Alquilado?</label><br>
 <select name="alquilado" id="alquilado" required>
@@ -161,6 +164,7 @@ else
 <option value="1">Sí</option>
 </select>
 </div>
+<?php } ?>
 
 <input type="file" name="foto" placeholder="Subir Foto" required>
 <button type="submit" name="enviar">Añadir Coche</button>
@@ -173,13 +177,13 @@ if (!$conn)
 {die("<h2>Error de conexión: " . mysqli_connect_error() . "</h2>");}
 
 if (isset($_POST['enviar'])) 
-{$id_coche = $_POST['id_coche'];
+{
 $modelo = $_POST['modelo'];
 $marca = $_POST['marca'];
 $color = $_POST['color'];
 $precio = $_POST['precio'];
 $alquilado = $_POST['alquilado'];
-
+$id_usuario = $_SESSION['id_usuario'];
 
 $foto = $_FILES['foto']['name'];
 $target_dir = "img/";
@@ -189,8 +193,8 @@ $check = getimagesize($_FILES['foto']['tmp_name']);
 if ($check === false) 
 {die("El archivo seleccionado no es una imagen.");}
 
-$sql = "INSERT INTO coches (id_coche, modelo, marca, color, precio, alquilado, foto) 
-        VALUES ('$id_coche', '$modelo', '$marca', '$color', '$precio', '$alquilado', '$foto')";
+$sql = "INSERT INTO coches (modelo, marca, color, precio, alquilado, foto, id_usuario) 
+            VALUES ('$modelo', '$marca', '$color', '$precio', '0', '$foto', '$id_usuario')";
 
 if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) 
 {echo "<div class='imagen'>La imagen " . htmlspecialchars(basename($foto)) . " se ha subido correctamente.</div>";}
