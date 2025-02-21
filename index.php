@@ -1,26 +1,22 @@
 <?php
-session_start();  // Asegúrate de que esta línea esté al principio
+session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    // El usuario no está autenticado
     $loggedIn = false;
 } else {
-    // El usuario está autenticado
     $loggedIn = true;
     $nombre = $_SESSION['nombre'];
     $apellidos = $_SESSION['apellidos'];
     $saldo = $_SESSION['saldo'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
 }
-
 if (isset($_POST['logout'])) {
-    session_destroy();  // Destruye todas las variables de sesión
-    $_SESSION = [];     // Asegúrate de limpiar todas las variables de sesión
-    header('Location: index.php');  // Redirige a index.php
+    session_destroy();  
+    $_SESSION = [];     
+    header('Location: index.php'); 
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>

@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $loggedIn = false;
+} else {
+    $loggedIn = true;
+    $nombre = $_SESSION['nombre'];
+    $apellidos = $_SESSION['apellidos'];
+    $saldo = $_SESSION['saldo'];
+    $tipo_usuario = $_SESSION['tipo_usuario'];
+}
+if (isset($_POST['logout'])) {
+    session_destroy();  
+    $_SESSION = [];     
+    header('Location: index.php'); 
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,7 +46,7 @@ th {background-color: #333; color: #d4af37; font-size: 18px;}
 tr:hover {background-color: #666;}
 h1 {text-align: center; color: #d4af37; font-size: 36px; margin-bottom: 20px;}
 .clasess {text-align: center; color: #d4af37; font-size: 36px; margin-bottom: 20px;}
-button{width: 200px;margin-left: 20px;padding: 12px 20px;border: none;border-radius: 8px; background-color: #d4af37;color: #111;font-size: 14px;font-family: 'Raleway', sans-serif;font-weight: bold;text-transform: uppercase;cursor: pointer;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);transition: background-color 0.3s ease, box-shadow 0.3s ease;}
+button{width: 150px;margin-left: 20px;padding: 12px 20px;border: none;border-radius: 8px; background-color: #d4af37;color: #111;font-size: 14px;font-family: 'Raleway', sans-serif;cursor: pointer;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);transition: background-color 0.3s ease, box-shadow 0.3s ease;}
 button:hover {background-color: #333;color: #d4af37;box-shadow: 0 6px 12px rgba(212, 175, 55, 0.5);}
 .volver {background-color: white; text-align: center; width: 20%; margin: 0 auto; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s;color:gray;margin-top:10px;} 
 .volver:hover {transform: scale(1.05); box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);}
@@ -128,7 +147,7 @@ echo "</tr>";
 echo "</table>";
 echo "<br>";
 echo "<div style='text-align: center; margin-top: 20px;'>
-<button type='submit'>Eliminar seleccionados</button>
+<button type='submit'><b>ELIMINAR SELECCIONADOS</b></button>
 </div>";
 echo "</form>";
 } else {

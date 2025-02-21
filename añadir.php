@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    $loggedIn = false;
+} else {
+    $loggedIn = true;
+    $nombre = $_SESSION['nombre'];
+    $apellidos = $_SESSION['apellidos'];
+    $saldo = $_SESSION['saldo'];
+    $tipo_usuario = $_SESSION['tipo_usuario'];
+}
+if (isset($_POST['logout'])) {
+    session_destroy();  
+    $_SESSION = [];     
+    header('Location: index.php'); 
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
