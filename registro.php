@@ -14,6 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo_usuario = $_POST['tipo_usuario']; // Obtener tipo de usuario
     $saldo = 0;
 
+    $password_hash = password_hash($password, PASSWORD_BCRYPT);
+
     // Consulta SQL actualizada para incluir tipo_usuario
     $query = "INSERT INTO usuarios (nombre, apellidos, dni, password, saldo, tipo_usuario) 
               VALUES ('$nombre', '$apellidos', '$dni', '$password', '$saldo', '$tipo_usuario')";
@@ -32,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <link rel="stylesheet" href="registro.css">
     <style>
         body {font-family: Arial, sans-serif; background-color: #111; color: #eaeaea; margin: 0; padding: 0;}
         .form-container {width: 320px; margin: 50px auto; padding: 30px; background-color: #222; border-radius: 10px; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);}

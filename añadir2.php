@@ -24,6 +24,7 @@ if (isset($_POST['logout'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agenda de Usuarios</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="añadir2.css">
 <style>
 body {margin: 0; font-family: 'Libre Baskerville', serif; background-color: #111; color: #eaeaea;}
 .clase1 {background-color: #000; color: #d4af37; padding: 20px 0; font-size: 36px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); position: sticky; top: 0; z-index: 1000; letter-spacing: 2px;}
