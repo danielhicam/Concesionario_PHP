@@ -22,14 +22,14 @@ if (isset($_POST['logout'])) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agenda de Alquileres</title>
+<title>Buscar Coches</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="listar.css">
 </head>
 <body>
 <div class="clase1">Agenda de Alquileres
 <div class="clase2">
-    
+
 <div class="clase3">Coches<div class="clase6"> 
 <?php if (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "comprador") 
 { ?> <a href="index.php">Inicio</a><a href="listar.php">Catalogo de Alquileres</a> <?php } 
@@ -77,6 +77,49 @@ else
 
 </div>
 </div>
-<div class="clase4"></div>
+<div class="clase4">
+<?php
+$conn = mysqli_connect("localhost", "root", "rootroot", "concesionario");
+if (!$conn) {
+    die("<h2>Error de conexión: " . mysqli_connect_error() . "</h2>");
+}
+
+$id_usuario = $_SESSION['id_usuario'];
+// Consulta para obtener los alquileres del usuario logueado
+$sql = "SELECT c.modelo, c.marca, c.color, a.prestado, a.devuelto 
+                  FROM alquileres a
+                  JOIN coches c ON a.id_coche = c.id_coche
+                  WHERE a.id_usuario = '$id_usuario'";
+
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    echo "<h1>Historial de Alquileres</h1>";
+    echo "<table>";
+    echo "<tr>
+            <th>Modelo</th>
+            <th>Marca</th>
+            <th>Color</th>
+            <th>Fecha de Alquiler</th>
+            <th>Fecha de Devolución</th>";
+    echo "</tr>";
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['modelo']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['marca']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['color']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['prestado']) . "</td>";
+        echo "<td>" . ($row['devuelto'] ? htmlspecialchars($row['devuelto']) : 'Pendiente') . "</td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
+} else {
+    echo "<p>No has alquilado coches todavía.</p>";
+}
+
+mysqli_close($conn);
+?>
+</div>
 </body>
 </html>

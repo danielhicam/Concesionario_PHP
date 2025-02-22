@@ -33,7 +33,7 @@ if (isset($_POST['logout'])) {
 
 <div class="clase3">Coches<div class="clase6"> 
 <?php if (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "comprador") 
-{ ?> <a href="index.php">Inicio</a><a href="listar.php">Listar</a> <a href="buscar.php">Buscar</a> <a href="alquilarcoche.php">Alquilar Coche</a> <?php } 
+{ ?> <a href="index.php">Inicio</a><a href="listar.php">Catalogo de Alquileres</a> <?php } 
 elseif (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "admin") 
 { ?><a href="index.php">Inicio</a><a href="añadir.php">Añadir</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a><a href="modificar.php">Modificar</a><a href="borrar.php">Borrar</a> <?php } 
 elseif (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "vendedor") 
@@ -57,11 +57,11 @@ else
 
 <div class="clase3">Alquiler<div class="clase6"> 
 <?php if (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "comprador") 
-{ ?> <a href="index.php">Inicio</a><a href="listar.php">Listar</a> <a href="buscar.php">Buscar</a> <?php } 
+{ ?> <a href="index.php">Inicio</a><a href="listar_alquileres.php">Listar todos los Alquileres</a><a href="historial_alquiler.php">Historial de Alquileres</a> <a href="devolver_alquiler.php">Devolver Alquileres</a> <?php } 
 elseif (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "admin") 
 { ?><a href="index.php">Inicio</a><a href="añadir.php">Añadir</a><a href="listar.php">Listar</a><a href="buscar.php">Buscar</a><a href="modificar.php">Modificar</a><a href="borrar.php">Borrar</a> <?php } 
 elseif (isset($_SESSION['nombre']) && $_SESSION['tipo_usuario'] === "vendedor") 
-{ ?> <a href="index.php">Inicio</a><a href="listar.php">Listar</a> <a href="modificar.php">Poner Alquiler</a> <?php } 
+{ ?> <a href="index.php">Inicio</a><a href="listar.php">Listar Alquiler</a> <a href="buscar.php">Buscar Alquiler</a> <?php } 
 else 
 { ?> <a href="registro.php">Registrate Para Acceder</a> <?php } ?>
 </div></div></div>
