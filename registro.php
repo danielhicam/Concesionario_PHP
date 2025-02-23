@@ -61,6 +61,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<div class='mensaje'>$mensaje</div>";
     }
     ?>
+
+<a href="index.php">
+        <button style="margin-top: 10px;">Volver al inicio</button>
+    </a>
 </div>
 
 </body>

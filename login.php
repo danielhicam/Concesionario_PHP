@@ -68,7 +68,11 @@ $conn->close();
             <label>Contraseña:</label>
             <input type="password" name="password" required>
             <button type="submit">Ingresar</button>
+            
         </form>
+        <a href="index.php">
+        <button style="margin-top: 10px;">Volver al inicio</button>
+    </a>
     </div>
 </body>
 </html>
