@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            if ($password == $row['password']) {
+            if (password_verify($password, $row['password'])) {
 
                 $_SESSION['loggedin'] = true;
                 $_SESSION['id_usuario'] = $row['id_usuario'];
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['saldo'] = $row['saldo'];
                 $_SESSION['tipo_usuario'] = $row['tipo_usuario'];
                 $_SESSION['start'] = time();
-                $_SESSION['expire'] = $_SESSION['start'] + (1 * 60);
+                $_SESSION['expire'] = $_SESSION['start'] + (10 * 60);
 
                 header("Location: index.php");
                 exit;
