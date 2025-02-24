@@ -24,6 +24,47 @@ h1 {text-align: center; color: #d4af37; font-size: 36px; margin-bottom: 20px;}
     text-align: center;
 }
 
+.devolver-btn-container {
+    margin-left: 660px;
+    margin-top: 20px;  /* Espacio superior */
+    font-size: 1.5em;  /* Tamaño de la fuente */
+    text-align: center;
+    color: #fff;  /* Color de texto */
+    background-color: rgb(171, 159, 26);  /* Fondo color dorado */
+    padding: 15px 30px;  /* Relleno */
+    border-radius: 12px;  /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  /* Sombra */
+    max-width: 500px;  /* Ancho máximo */
+    font-family: Arial, sans-serif;  /* Familia de fuente */
+}
+
+.devolver-btn {
+    background-color: rgb(171, 159, 26); /* Color de fondo */
+    color: white; /* Color de texto */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 1.2em; /* Tamaño de la fuente */
+    border-radius: 8px; /* Bordes redondeados */
+    cursor: pointer; /* Aparece como un puntero al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+.devolver-btn:hover {
+    background-color: #C9B357; /* Color de fondo al pasar el ratón */
+}
+
+
+
+.devolver-btn:focus {
+    outline: none;
+}
+
+.devolver-btn:active {
+    background-color: #1e7e34; /* Verde aún más oscuro cuando se hace clic */
+}
+
+
+
 .exito {
     background-color: #28a745; /* Color verde de éxito */
     color: white;

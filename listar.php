@@ -9,6 +9,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     $apellidos = $_SESSION['apellidos'];
     $saldo = $_SESSION['saldo'];
     $tipo_usuario = $_SESSION['tipo_usuario'];
+    $id_usuario = $_SESSION['id_usuario'];
 }
 if (isset($_POST['logout'])) {
     session_destroy();  
@@ -83,43 +84,65 @@ if (!$conn) {
     die("<h2>Error de conexión: " . mysqli_connect_error() . "</h2>");
 }
 
-if (isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] === "comprador") {
-    // Si el usuario es comprador, solo mostrar coches no alquilados
-    $sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches WHERE alquilado = 0";
-} else {
-    // Si no es comprador (admin o vendedor), mostrar todos los coches
-    $sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches";
-}
+$sql = "SELECT id_coche, modelo, marca, color, precio, alquilado, foto FROM coches WHERE alquilado = 0";
+$result = mysqli_query($conn, $sql);
 
-if ($_SESSION['tipo_usuario'] === "comprador" && isset($_POST['coche_seleccionado'])) {
-    $usuario_id = $_SESSION['id_usuario'];  // Obtén el ID del usuario desde la sesión
-    $coche_seleccionados = $_POST['coche_seleccionado'];  // Array de coches seleccionados
+if ($loggedIn && $tipo_usuario === "comprador" && isset($_POST['coche_seleccionado'])) {
+    $coche_seleccionados = $_POST['coche_seleccionado'];
+    $saldo_disponible = $saldo; // Saldo del usuario
 
-    // Fecha y hora actual para el alquiler
-    $fecha_prestado = date("Y-m-d H:i:s");
+    // Verificar si el usuario tiene saldo suficiente para alquilar los coches seleccionados
+    $precio_total = 0;
+    $id_vendedor = null;  // Inicializar variable para el id del vendedor
 
-    // Iterar sobre los coches seleccionados
     foreach ($coche_seleccionados as $coche_id) {
-        // Insertar en la tabla alquileres
-        $sql_insert_alquiler = "INSERT INTO alquileres (id_usuario, id_coche, prestado) VALUES ('$usuario_id', '$coche_id', '$fecha_prestado')";
-        if (mysqli_query($conn, $sql_insert_alquiler)) {
-            // Si la inserción fue exitosa, actualizar la tabla coches
-            $sql_update_coche = "UPDATE coches SET alquilado = 1 WHERE id_coche = '$coche_id'";
-            if (!mysqli_query($conn, $sql_update_coche)) {
-                echo "<p>Error al actualizar el coche con ID $coche_id.</p>";
-            }
-        } else {
-            echo "<p>Error al insertar en alquileres para el coche con ID $coche_id.</p>";
+        // Obtener el precio y el id del vendedor para cada coche
+        $query_precio = "SELECT precio, id_vendedor FROM coches WHERE id_coche = '$coche_id'";
+        $result_precio = mysqli_query($conn, $query_precio);
+        if ($row_precio = mysqli_fetch_assoc($result_precio)) {
+            $precio_total += $row_precio['precio'];
+            $id_vendedor = $row_precio['id_vendedor']; // Almacenar el id del vendedor
         }
     }
 
-    echo "<div class='exito'>¡El alquiler se ha realizado con éxito!<br><a href='historial_alquiler.php'>Ver mis Alquileres</a></div>";
+    if ($saldo_disponible >= $precio_total) {
+        // Alquilar los coches
+        foreach ($coche_seleccionados as $coche_id) {
+            $fecha_prestado = date("Y-m-d H:i:s");
+            $sql_insert_alquiler = "INSERT INTO alquileres (id_usuario, id_coche, prestado) VALUES ('$id_usuario', '$coche_id', '$fecha_prestado')";
+            if (mysqli_query($conn, $sql_insert_alquiler)) {
+                $sql_update_coche = "UPDATE coches SET alquilado = 1 WHERE id_coche = '$coche_id'";
+                mysqli_query($conn, $sql_update_coche);
+            }
+        }
+
+        // Descontar el saldo del comprador
+        $nuevo_saldo = $saldo_disponible - $precio_total;
+        $sql_update_saldo = "UPDATE usuarios SET saldo = '$nuevo_saldo' WHERE id_usuario = '$id_usuario'";
+        mysqli_query($conn, $sql_update_saldo);
+
+        // Actualizar el saldo del vendedor
+        $sql_vendedor = "SELECT saldo FROM usuarios WHERE id_usuario = '$id_vendedor'";
+        $result_vendedor = mysqli_query($conn, $sql_vendedor);
+        if ($row_vendedor = mysqli_fetch_assoc($result_vendedor)) {
+            $nuevo_saldo_vendedor = $row_vendedor['saldo'] + $precio_total;
+            $sql_update_saldo_vendedor = "UPDATE usuarios SET saldo = saldo + $nuevo_saldo_vendedor WHERE id_usuario = '$id_vendedor'";
+            mysqli_query($conn, $sql_update_saldo_vendedor);
+        }
+
+        // Actualizar el saldo en sesión
+        $_SESSION['saldo'] = $nuevo_saldo;
+
+        echo "<div class='exito'>¡El alquiler se ha realizado con éxito!<br><a href='historial_alquiler.php'>Ver mis Alquileres</a></div>";
+    } else {
+        echo "<div class='error'>Saldo insuficiente para alquilar los coches seleccionados.</div>";
+    }
 }
 
-$result = mysqli_query($conn, $sql);
+
 if (mysqli_num_rows($result) > 0) {
     echo "<h1>Listado de Coches</h1>";
-    echo "<form method='POST' action='listar.php'>";  // Aquí iniciamos el formulario de alquiler
+    echo "<form method='POST' action='listar.php'>";
 
     echo "<table>";
     echo "<tr>
@@ -129,10 +152,9 @@ if (mysqli_num_rows($result) > 0) {
             <th>Precio</th>
             <th>Alquilado</th>
             <th>Foto</th>";
-            
-    // Solo mostrar la columna de checkboxes si el usuario es comprador
-    if ($_SESSION['tipo_usuario'] === "comprador") {
-        echo "<th>Seleccionar</th>";  // Nueva columna para checkboxes
+
+    if ($loggedIn && $tipo_usuario === "comprador") {
+        echo "<th>Seleccionar</th>";
     }
 
     echo "</tr>";
@@ -142,12 +164,11 @@ if (mysqli_num_rows($result) > 0) {
         echo "<td>" . htmlspecialchars($row['modelo']) . "</td>";
         echo "<td>" . htmlspecialchars($row['marca']) . "</td>";
         echo "<td>" . htmlspecialchars($row['color']) . "</td>";
-        echo "<td>" . htmlspecialchars($row['precio']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['precio']) . " €</td>";
         echo "<td>" . ($row['alquilado'] ? 'Sí' : 'No') . "</td>";
         echo "<td><img src='img/" . htmlspecialchars($row['foto']) . "' alt='Sin Foto' style='width: 100px; border-radius: 15px; border: 2px solid black;'></td>";
 
-        // Solo mostrar el checkbox si el usuario es comprador
-        if ($_SESSION['tipo_usuario'] === "comprador") {
+        if ($loggedIn && $tipo_usuario === "comprador") {
             echo "<td><input type='checkbox' name='coche_seleccionado[]' value='" . $row['id_coche'] . "'></td>";
         }
 
@@ -156,13 +177,13 @@ if (mysqli_num_rows($result) > 0) {
 
     echo "</table>";
 
-    // Botón de alquiler visible solo para compradores
-    if ($_SESSION['tipo_usuario'] === "comprador") {
+    if ($loggedIn && $tipo_usuario === "comprador") {
         echo "<br><button type='submit' class='clase3 center-button'>Alquilar Seleccionados</button>";
     }
 
     echo "</form>";
 }
+
 mysqli_close($conn);
 ?>
 </div>

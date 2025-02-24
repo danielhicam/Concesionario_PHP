@@ -24,10 +24,8 @@ if (isset($_POST['devolver'])) {
             die("<h2>Error de conexión: " . mysqli_connect_error() . "</h2>");
         }
 
-        // Recoger los alquileres seleccionados
         $alquileres = $_POST['alquileres'];
 
-        // Actualizar los alquileres a "devuelto"
         foreach ($alquileres as $alquiler) {
             $sql = "UPDATE alquileres SET devuelto = NOW() WHERE id_alquiler = '$alquiler'";
             mysqli_query($conn, $sql);
@@ -125,24 +123,32 @@ if (!$conn) {
 
 $id_usuario = $_SESSION['id_usuario'];
 
-// Procesar devolución de alquileres
 if (isset($_POST['devolver_alquiler'])) {
     if (isset($_POST['devolver'])) {
         $ids_a_devolver = $_POST['devolver'];
 
         foreach ($ids_a_devolver as $id_alquiler) {
-            // Actualizar la base de datos para marcar el alquiler como devuelto
-            $sql_update = "UPDATE alquileres SET devuelto = NOW() WHERE id_alquiler = '$id_alquiler' AND id_usuario = '$id_usuario'";
-            if (mysqli_query($conn, $sql_update)) {
-                // Alquiler devuelto correctamente, no lo mostramos en el historial
-            } else {
-                echo "<p>Error al devolver el alquiler con ID $id_alquiler.</p>";
+            // Obtener el id_coche del alquiler antes de actualizarlo
+            $sql_select = "SELECT id_coche FROM alquileres WHERE id_alquiler = '$id_alquiler' AND id_usuario = '$id_usuario'";
+            $result_select = mysqli_query($conn, $sql_select);
+            if ($row = mysqli_fetch_assoc($result_select)) {
+                $id_coche = $row['id_coche'];
+
+                // Actualizar la fecha de devolución
+                $sql_update = "UPDATE alquileres SET devuelto = NOW() WHERE id_alquiler = '$id_alquiler' AND id_usuario = '$id_usuario'";
+                if (mysqli_query($conn, $sql_update)) {
+                    // Marcar el coche como disponible
+                    $sql_update_coche = "UPDATE coches SET alquilado = 0 WHERE id_coche = '$id_coche'";
+                    mysqli_query($conn, $sql_update_coche);
+                } else {
+                    echo "<p>Error al devolver el alquiler con ID $id_alquiler.</p>";
+                }
             }
         }
     }
 }
 
-// Consulta para obtener los alquileres del usuario logueado (excluyendo los devueltos)
+
 $sql = "SELECT a.id_alquiler, c.modelo, c.marca, c.color, a.prestado, a.devuelto 
                   FROM alquileres a
                   JOIN coches c ON a.id_coche = c.id_coche
@@ -152,7 +158,7 @@ $result = mysqli_query($conn, $sql);
 
 if (mysqli_num_rows($result) > 0) {
     echo "<h1>Historial de Alquileres</h1>";
-    echo "<form method='POST'>"; // Iniciar el formulario para enviar los coches seleccionados
+    echo "<form method='POST'>";
     echo "<table>";
     echo "<tr>
             <th>Seleccionar</th>
@@ -175,15 +181,16 @@ if (mysqli_num_rows($result) > 0) {
     }
 
     echo "</table>";
-    echo "<button type='submit' name='devolver_alquiler'>Devolver Alquiler</button>";
+    echo "<div class='devolver-btn-container'>";
+    echo "<button class='devolver-btn' type='submit' name='devolver_alquiler'>Devolver Alquiler</button>";
+    echo "</div>";
+
     echo "</form>";
 } else {
-    echo "<p style='position:absolute; margin-left:1000px; text-align: center; font-size: 1.5em; color: #fff; background-color:rgb(171, 159, 26); padding: 15px 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); max-width: 500px; margin: 20px auto; font-family: Arial, sans-serif;'>
+    echo "<p class='devolver-btn-container'>
             No tienes alquileres pendientes de devolución.
           </p>";
-
 }
-
 mysqli_close($conn);
 ?>
 

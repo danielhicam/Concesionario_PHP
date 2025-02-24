@@ -45,6 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Recuperar el saldo desde la base de datos al iniciar sesión
+$query_saldo = "SELECT saldo FROM usuarios WHERE id_usuario = '$id_usuario'";
+$result_saldo = mysqli_query($conn, $query_saldo);
+if ($row_saldo = mysqli_fetch_assoc($result_saldo)) {
+    $_SESSION['saldo'] = $row_saldo['saldo']; // Guardar saldo en la sesión
+}
+
+
 $conn->close();
 ?>
 
