@@ -1,0 +1,83 @@
+/* Estilo global */
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #111;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #FFD700; /* Dorado */
+    font-size: 24px;
+}
+
+.user-data {
+    margin-top: 20px;
+}
+
+.data-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    font-size: 18px;
+}
+
+span {
+    font-size: 16px;
+    color: #FFD700;
+}
+
+.mod-form {
+    margin-top: 10px;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 10px;
+    border: 1px solid #444;
+    background-color: #222;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 12px;
+    background-color: #FFD700; /* Dorado */
+    color: #000;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #FFB800;
+}
+
+.error {
+    color: #FF4C4C;
+}
+
+.success {
+    color: #4CAF50;
+}
